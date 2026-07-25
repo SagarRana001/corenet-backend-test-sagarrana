@@ -4,6 +4,7 @@ import { SlotsController } from './slots.controller';
 
 @Module({
   providers: [SlotsService],
-  controllers: [SlotsController]
+  controllers: [SlotsController],
+  exports: [SlotsService],
 })
 export class SlotsModule {}

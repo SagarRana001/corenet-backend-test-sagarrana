@@ -159,7 +159,7 @@ export class SlotsService {
     const bookings = await this.prisma.booking.findMany({
       where: {
         serviceId,
-        date,
+        bookingDate: date,
         status: 'CONFIRMED',
       },
       select: {
