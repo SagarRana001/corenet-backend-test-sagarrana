@@ -19,9 +19,11 @@ This table serves as the central identity repository for all system actors.
 | `last_name` | String | User's last name |
 | `email` | String | Unique email address |
 | `phone` | String | Contact number |
-| `password` | String | Hashed password |
+| `password_hash` | String | Argon2/bcrypt hashed password |
 | `role` | Enum | `APP_SUPER_ADMIN`, `OWNER`, `EMPLOYEE`, `CUSTOMER` |
 | `status` | Enum | `ACTIVE`, `INACTIVE`, `SUSPENDED` |
+| `email_verified_at` | DateTime (Nullable) | Timestamp of email verification |
+| `last_login_at` | DateTime (Nullable) | Timestamp of last login |
 | `created_at` | DateTime | Timestamp of creation |
 | `updated_at` | DateTime | Timestamp of last update |
 | `deleted_at` | DateTime (Nullable) | Soft delete timestamp |
@@ -139,6 +141,61 @@ Tracks global company-wide closures.
 | `holiday_date` | Date | Date the company is closed |
 | `reason` | String | e.g., "Christmas", "National Holiday" |
 
+### 9. `user_sessions`
+Explicitly tracks sessions to enable Multiple Device Login, Session Tracking, and secure Refresh Token Rotation.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | UUID | Primary Key |
+| `user_id` | UUID | Foreign key to `users` |
+| `refresh_token_hash`| String | SHA256 hash of the issued refresh token |
+| `device_name` | String | Extracted device name |
+| `device_type` | String | Mobile, Desktop, Tablet |
+| `browser` | String | Extracted browser info |
+| `operating_system` | String | Extracted OS info |
+| `ip_address` | String | IP at the time of login |
+| `user_agent` | String | Raw User-Agent string |
+| `expires_at` | DateTime | Expiration of the refresh token |
+| `last_used_at` | DateTime | Last time the session was active |
+| `revoked_at` | DateTime (Nullable)| Revocation timestamp |
+| `created_at` | DateTime | Session creation time |
+| `updated_at` | DateTime | Last update time |
+
+### 10. `password_reset_tokens`
+Stores hashed reset tokens to secure the forgot-password flow.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | UUID | Primary Key |
+| `user_id` | UUID | Foreign key to `users` |
+| `token_hash` | String | Hashed reset token |
+| `expires_at` | DateTime | Expiration time (e.g., 1 hour) |
+| `used_at` | DateTime (Nullable)| When the token was consumed |
+| `created_at` | DateTime | Creation timestamp |
+
+### 11. `email_verification_tokens`
+Stores hashed verification tokens for new user registration.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | UUID | Primary Key |
+| `user_id` | UUID | Foreign key to `users` |
+| `token_hash` | String | Hashed verification token |
+| `expires_at` | DateTime | Expiration time |
+| `used_at` | DateTime (Nullable)| When the token was consumed |
+| `created_at` | DateTime | Creation timestamp |
+
+### 12. `login_attempts`
+Tracks login requests to provide brute-force protection and rate limiting.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | UUID | Primary Key |
+| `email` | String | Attempted email |
+| `ip_address` | String | Originating IP |
+| `success` | Boolean | Boolean indicating outcome |
+| `created_at` | DateTime | Timestamp of attempt |
+
 ---
 
 ## ER Relationships
@@ -159,6 +216,11 @@ erDiagram
     
     USERS }|--|| SERVICE_USER_MAPPING : "can perform"
     SERVICES }|--|| SERVICE_USER_MAPPING : "performed by"
+    
+    USERS ||--o{ USER_SESSIONS : "has many"
+    USERS ||--o{ PASSWORD_RESET_TOKENS : "requests"
+    USERS ||--o{ EMAIL_VERIFICATION_TOKENS : "receives"
+    USERS ||--o{ LOGIN_ATTEMPTS : "generates (via email)"
 ```
 
 ### Relationship Flow Diagram
@@ -182,6 +244,7 @@ flowchart TD
 - **Company ↓ Bookings:** All bookings belong to a company for tenancy scoping and analytics.
 - **Company ↓ Leaves / Holidays:** Time-off logic is scoped per company.
 - **Service ↔ Users:** This is a crucial Many-to-Many relationship implemented via `service_user_mapping`. It connects employees to the specific services they are authorized to perform. 
+- **Users ↓ Auth Tables:** A user can have multiple sessions, reset tokens, verification tokens, and login attempts directly tied to their identity.
 
 ---
 
@@ -242,7 +305,7 @@ flowchart TD
 
 ## Performance Considerations
 
-- **Indexes:** Aggressive indexing on `appointment_date`, `status`, and `company_id` allows the availability generation query to execute in single-digit milliseconds.
+- **Indexes:** Aggressive indexing on `appointment_date`, `status`, and `company_id` allows the availability generation query to execute in single-digit milliseconds. Additional indexes on auth tables (`user_sessions.refresh_token_hash`, `login_attempts.email`) ensure rapid authentication flows.
 - **Transactions:** Booking creation is wrapped in a Prisma `SERIALIZABLE` transaction to read limits and write the booking safely, leaning on the unique constraint for fallback.
 - **Future Redis Caching:** If read traffic spikes, availability for a specific `(company_id, date)` can be cached in Redis with a TTL, and invalidated via a webhook or event emitter whenever a booking, leave, or config is updated.
 - **Timezone Support:** All datetimes are stored in UTC. Local boundaries (like opening hours) are stored as strings (`"09:00"`) and calculated relative to the `company_config.timezone` dynamically at runtime, immune to Daylight Saving Time edge cases.
@@ -258,6 +321,6 @@ Future scalable tables (not designed here) would hook into this foundation:
 - `subscriptions` (linked to `companies.id` for SaaS billing)
 - `notifications` (linked to `users.id`)
 - `reviews` (linked to `bookings.id` and `services.id`)
-- `audit_logs` (for tracking changes to `company_config`)
+- `audit_logs` (for tracking changes to `company_config` and auth events)
 - `branches` (adding a branch layer between companies and users for multi-location)
 - `calendar_integrations` (storing OAuth tokens for Google/Outlook sync)
