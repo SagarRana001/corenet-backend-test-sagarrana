@@ -10,3 +10,12 @@ dist/
 .windsurf/
 .agents/
 skills-lock.json
+
+# Testing and Logs
+coverage/
+.nyc_output/
+*.log
+npm-debug.log*
+
+# OS Files
+.DS_Store
