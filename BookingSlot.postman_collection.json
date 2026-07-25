@@ -1,0 +1,699 @@
+{
+  "info": {
+    "_postman_id": "93e2e86a-63a3-4e45-a38e-8c8a818e73a7",
+    "name": "BookingSlot",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "4652666"
+  },
+  "item": [
+    {
+      "name": "Business",
+      "item": [
+        {
+          "name": "me",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im93bmVyQHN1cGVyc2Fsb24uY29tIiwic3ViIjoiODExZTA0ODItMDI3ZC00YzYxLWI5YzctNzVlOWViODM1ZmMwIiwicm9sZSI6Ik9XTkVSIiwiaWF0IjoxNzg0OTc4NjgyLCJleHAiOjE3ODQ5Nzk1ODJ9.So333cxm6eJwglM4OUIiPOIfEnex6gDTL2i_f0pVFLM"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/business/me",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "business",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "business",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im93bmVyQHN1cGVyc2Fsb24uY29tIiwic3ViIjoiODExZTA0ODItMDI3ZC00YzYxLWI5YzctNzVlOWViODM1ZmMwIiwicm9sZSI6Ik9XTkVSIiwiaWF0IjoxNzg0OTc3MjM5LCJleHAiOjE3ODQ5NzgxMzl9.-5Rt8K5gSkqw71HcL81h_pELjbW7gCiSrMVM4bfibiY"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"businessName\": \"Super Salon\",\n    \"email\": \"contact@supersalon.com\",\n    \"website\": \"https://supersalon.com\",\n    \"addressLine1\": \"123 Main St\",\n    \"city\": \"New York\",\n    \"state\": \"NY\",\n    \"country\": \"USA\",\n    \"postalCode\": \"10001\",\n    \"timezone\": \"America/New_York\"\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/business",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "business"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update business",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im93bmVyQHN1cGVyc2Fsb24uY29tIiwic3ViIjoiODExZTA0ODItMDI3ZC00YzYxLWI5YzctNzVlOWViODM1ZmMwIiwicm9sZSI6Ik9XTkVSIiwiaWF0IjoxNzg0OTc3NjEzLCJleHAiOjE3ODQ5Nzg1MTN9.UEggqe2Eiuhgzb0GdxviM261CTstDprnNFy0mAKw-X0"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"description\": \"We are now open on Sundays!\"\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/business/me",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "business",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im93bmVyQHN1cGVyc2Fsb24uY29tIiwic3ViIjoiODExZTA0ODItMDI3ZC00YzYxLWI5YzctNzVlOWViODM1ZmMwIiwicm9sZSI6Ik9XTkVSIiwiaWF0IjoxNzg0OTc3NjEzLCJleHAiOjE3ODQ5Nzg1MTN9.UEggqe2Eiuhgzb0GdxviM261CTstDprnNFy0mAKw-X0"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/business/me",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "business",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Service",
+      "item": [
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im93bmVyQHN1cGVyc2Fsb24uY29tIiwic3ViIjoiODExZTA0ODItMDI3ZC00YzYxLWI5YzctNzVlOWViODM1ZmMwIiwicm9sZSI6Ik9XTkVSIiwiaWF0IjoxNzg0OTc4NjAwLCJleHAiOjE3ODQ5Nzk1MDB9.n5PZokwmC4WimsuzHGgbY64_LpV3fFO1jKI0IY1QlcM"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Haircut\",\n    \"description\": \"Standard mens haircut\",\n    \"durationMinutes\": 30,\n    \"price\": 500\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/services",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "services"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im93bmVyQHN1cGVyc2Fsb24uY29tIiwic3ViIjoiODExZTA0ODItMDI3ZC00YzYxLWI5YzctNzVlOWViODM1ZmMwIiwicm9sZSI6Ik9XTkVSIiwiaWF0IjoxNzg0OTg0NDUzLCJleHAiOjE3ODQ5ODUzNTN9.kWR6APIEMKGx96KuHN9bCiA26I7c74ZQ6Pu2ptVeSl8"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/services",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "services"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get By Id",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im93bmVyQHN1cGVyc2Fsb24uY29tIiwic3ViIjoiODExZTA0ODItMDI3ZC00YzYxLWI5YzctNzVlOWViODM1ZmMwIiwicm9sZSI6Ik9XTkVSIiwiaWF0IjoxNzg0OTc4NjgyLCJleHAiOjE3ODQ5Nzk1ODJ9.So333cxm6eJwglM4OUIiPOIfEnex6gDTL2i_f0pVFLM"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/services/79af5b26-d054-430a-a457-d7379df2986f",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "services",
+                "79af5b26-d054-430a-a457-d7379df2986f"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:3000/services/79af5b26-d054-430a-a457-d7379df2986f",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im93bmVyQHN1cGVyc2Fsb24uY29tIiwic3ViIjoiODExZTA0ODItMDI3ZC00YzYxLWI5YzctNzVlOWViODM1ZmMwIiwicm9sZSI6Ik9XTkVSIiwiaWF0IjoxNzg0OTc4NjgyLCJleHAiOjE3ODQ5Nzk1ODJ9.So333cxm6eJwglM4OUIiPOIfEnex6gDTL2i_f0pVFLM"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"price\": 600,\n    \"description\": \"Premium mens haircut\"\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/services/79af5b26-d054-430a-a457-d7379df2986f",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "services",
+                "79af5b26-d054-430a-a457-d7379df2986f"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im93bmVyQHN1cGVyc2Fsb24uY29tIiwic3ViIjoiODExZTA0ODItMDI3ZC00YzYxLWI5YzctNzVlOWViODM1ZmMwIiwicm9sZSI6Ik9XTkVSIiwiaWF0IjoxNzg0OTc4NjgyLCJleHAiOjE3ODQ5Nzk1ODJ9.So333cxm6eJwglM4OUIiPOIfEnex6gDTL2i_f0pVFLM"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/services/79af5b26-d054-430a-a457-d7379df2986f",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "services",
+                "79af5b26-d054-430a-a457-d7379df2986f"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "BookSlots",
+      "item": [
+        {
+          "name": "Create",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im93bmVyQHN1cGVyc2Fsb24uY29tIiwic3ViIjoiODExZTA0ODItMDI3ZC00YzYxLWI5YzctNzVlOWViODM1ZmMwIiwicm9sZSI6Ik9XTkVSIiwiaWF0IjoxNzg0OTgwOTk4LCJleHAiOjE3ODQ5ODE4OTh9.Nh1Y_nIQgYiwUQP6b_Uguo4jOycRgAakZGhJEps53FQ"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n      \"dayOfWeek\": \"MONDAY\",\n    \"startTime\": \"13:00\",\n    \"endTime\": \"13:30\"\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/availability",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "availability"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "availability List",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im93bmVyQHN1cGVyc2Fsb24uY29tIiwic3ViIjoiODExZTA0ODItMDI3ZC00YzYxLWI5YzctNzVlOWViODM1ZmMwIiwicm9sZSI6Ik9XTkVSIiwiaWF0IjoxNzg0OTgzMzE1LCJleHAiOjE3ODQ5ODQyMTV9.8zABxWHja83tr6XfgY5quseB1yEmJzB8a9PSPe1KTqs"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/availability",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "availability"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get availability by ID",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im93bmVyQHN1cGVyc2Fsb24uY29tIiwic3ViIjoiODExZTA0ODItMDI3ZC00YzYxLWI5YzctNzVlOWViODM1ZmMwIiwicm9sZSI6Ik9XTkVSIiwiaWF0IjoxNzg0OTgwOTk4LCJleHAiOjE3ODQ5ODE4OTh9.Nh1Y_nIQgYiwUQP6b_Uguo4jOycRgAakZGhJEps53FQ"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/availability/1d00d8d5-c71b-4a61-a52d-07329e07c85a",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "availability",
+                "1d00d8d5-c71b-4a61-a52d-07329e07c85a"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "availability Update",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im93bmVyQHN1cGVyc2Fsb24uY29tIiwic3ViIjoiODExZTA0ODItMDI3ZC00YzYxLWI5YzctNzVlOWViODM1ZmMwIiwicm9sZSI6Ik9XTkVSIiwiaWF0IjoxNzg0OTgwOTk4LCJleHAiOjE3ODQ5ODE4OTh9.Nh1Y_nIQgYiwUQP6b_Uguo4jOycRgAakZGhJEps53FQ"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"startTime\": \"11:00\"\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:3000/availability/1d00d8d5-c71b-4a61-a52d-07329e07c85a",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "availability",
+                "1d00d8d5-c71b-4a61-a52d-07329e07c85a"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im93bmVyQHN1cGVyc2Fsb24uY29tIiwic3ViIjoiODExZTA0ODItMDI3ZC00YzYxLWI5YzctNzVlOWViODM1ZmMwIiwicm9sZSI6Ik9XTkVSIiwiaWF0IjoxNzg0OTgwOTk4LCJleHAiOjE3ODQ5ODE4OTh9.Nh1Y_nIQgYiwUQP6b_Uguo4jOycRgAakZGhJEps53FQ"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/availability/1d00d8d5-c71b-4a61-a52d-07329e07c85a",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "availability",
+                "1d00d8d5-c71b-4a61-a52d-07329e07c85a"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Slot",
+      "item": [
+        {
+          "name": "service wise slot",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImN1c3RAc3VwZXJzYWxvbi5jb20iLCJzdWIiOiIwMzE2YWNlMS1lMzg5LTRlNTEtOWQ3ZS0xNzdhNzkxOGRjOTUiLCJyb2xlIjoiQ1VTVE9NRVIiLCJpYXQiOjE3ODQ5ODQ5NTQsImV4cCI6MTc4NDk4NTg1NH0.VrKuhgVBRirvbrJ22Jflf9TKuvRvtTVG4MQg7O3mqyQ"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/services/79af5b26-d054-430a-a457-d7379df2986f/slots?date=2026-07-30",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "services",
+                "79af5b26-d054-430a-a457-d7379df2986f",
+                "slots"
+              ],
+              "query": [
+                {
+                  "key": "date",
+                  "value": "2026-07-30"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Slot List by service",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im93bmVyQHN1cGVyc2Fsb24uY29tIiwic3ViIjoiODExZTA0ODItMDI3ZC00YzYxLWI5YzctNzVlOWViODM1ZmMwIiwicm9sZSI6Ik9XTkVSIiwiaWF0IjoxNzg0OTgzMzE1LCJleHAiOjE3ODQ5ODQyMTV9.8zABxWHja83tr6XfgY5quseB1yEmJzB8a9PSPe1KTqs"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/services/79af5b26-d054-430a-a457-d7379df2986f/slots?date=2026-07-30",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "services",
+                "79af5b26-d054-430a-a457-d7379df2986f",
+                "slots"
+              ],
+              "query": [
+                {
+                  "key": "date",
+                  "value": "2026-07-30"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "register",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"email\": \"testuser@example.com\",\n    \"password\": \"mySecurePassword123\",\n    \"fullName\": \"Sagar Rana\"\n  }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/auth/register",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "auth",
+            "register"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"email\": \"cust@supersalon.com\",\n    \"password\": \"mySecurePassword123\"\n  }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/auth/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "me",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3R1c2VyQGV4YW1wbGUuY29tIiwic3ViIjoiMjdiM2UzYzYtNWY1My00N2RjLTlhMjQtMTg3NTAzNDMyMjgxIiwicm9sZSI6IkNVU1RPTUVSIiwiaWF0IjoxNzg0OTc0MzQ3LCJleHAiOjE3ODQ5NzUyNDd9.O2ueziZL3Dj-ytuc_B_JLLutA-Yq4BzAHZiyKF5UAUw"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:3000/auth/me",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "auth",
+            "me"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "OWNER",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"email\": \"cust@supersalon.com\",\n    \"password\": \"mySecurePassword123\",\n    \"fullName\": \"Business Customer\",\n    \"role\": \"CUSTOMER\"\n  }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/auth/register",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "auth",
+            "register"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "New Request",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "New Request",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    }
+  ]
+}
