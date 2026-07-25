@@ -28,9 +28,9 @@ model User {
 }
 
 model BusinessProfile {
-  id           String   @id @default(uuid()) @db.Uuid
-  ownerId      String   @unique @db.Uuid
-  owner        User     @relation(fields: [ownerId], references: [id])
+  id           String    @id @default(uuid()) @db.Uuid
+  ownerId      String    @unique @db.Uuid
+  owner        User      @relation(fields: [ownerId], references: [id])
   businessName String
   description  String?
   email        String?
@@ -44,7 +44,24 @@ model BusinessProfile {
   country      String
   postalCode   String
   timezone     String
-  isActive     Boolean  @default(true)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  services     Service[]
+}
+
+model Service {
+  id              String          @id @default(uuid()) @db.Uuid
+  businessId      String          @db.Uuid
+  business        BusinessProfile @relation(fields: [businessId], references: [id])
+  name            String
+  description     String?
+  durationMinutes Int
+  price           Float
+  currency        String          @default("INR")
+  isActive        Boolean         @default(true)
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@unique([businessId, name])
 }
