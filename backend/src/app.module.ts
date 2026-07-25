@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { BusinessModule } from './business/business.module';
 import { ServicesModule } from './services/services.module';
+import { AvailabilityModule } from './availability/availability.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { ServicesModule } from './services/services.module';
     AuthModule,
     BusinessModule,
     ServicesModule,
+    AvailabilityModule,
   ],
   controllers: [AppController],
   providers: [AppService],
