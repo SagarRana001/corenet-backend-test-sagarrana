@@ -2,7 +2,7 @@ import { BadRequestException, ConflictException, Injectable, NotFoundException }
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { SlotsService } from '../slots/slots.service';
-import { Prisma, Role } from '@prisma/client';
+import { Prisma, Role, BookingStatus } from '@prisma/client';
 
 @Injectable()
 export class BookingsService {
@@ -105,22 +105,52 @@ export class BookingsService {
     }
   }
 
-  async findAllForCustomer(customerId: string) {
-    return this.prisma.booking.findMany({
-      where: { customerId },
-      include: {
-        service: {
-          select: { name: true, durationMinutes: true, price: true },
+  async findAllForCustomer(customerId: string, filters: import('./dto/get-bookings-filter.dto').GetBookingsFilterDto) {
+    const { status, fromDate, toDate, page = 1, limit = 10 } = filters;
+    const skip = (page - 1) * limit;
+
+    const whereClause: Prisma.BookingWhereInput = { customerId };
+
+    if (status) {
+      whereClause.status = status;
+    }
+
+    if (fromDate || toDate) {
+      whereClause.bookingDate = {};
+      if (fromDate) whereClause.bookingDate.gte = fromDate;
+      if (toDate) whereClause.bookingDate.lte = toDate;
+    }
+
+    const [data, total] = await Promise.all([
+      this.prisma.booking.findMany({
+        where: whereClause,
+        skip,
+        take: limit,
+        include: {
+          service: {
+            select: { name: true, durationMinutes: true, price: true, currency: true },
+          },
+          business: {
+            select: { businessName: true },
+          },
         },
-        business: {
-          select: { businessName: true },
-        },
+        orderBy: [
+          { bookingDate: 'desc' },
+          { startTime: 'desc' },
+        ],
+      }),
+      this.prisma.booking.count({ where: whereClause }),
+    ]);
+
+    return {
+      data,
+      meta: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
       },
-      orderBy: [
-        { bookingDate: 'desc' },
-        { startTime: 'desc' },
-      ],
-    });
+    };
   }
 
   async findOneForCustomer(id: string, customerId: string) {
@@ -140,5 +170,113 @@ export class BookingsService {
     }
 
     return booking;
+  }
+
+  async cancelBooking(id: string, customerId: string) {
+    const booking = await this.findOneForCustomer(id, customerId);
+
+    if (['CANCELLED', 'COMPLETED', 'NO_SHOW'].includes(booking.status)) {
+      throw new BadRequestException(`Cannot cancel a booking that is ${booking.status}`);
+    }
+
+    const updated = await this.prisma.booking.update({
+      where: { id },
+      data: { status: 'CANCELLED' },
+    });
+
+    return { message: 'Booking cancelled successfully', booking: updated };
+  }
+  async findAllForOwner(ownerId: string, filters: import('./dto/owner-get-bookings-filter.dto').OwnerGetBookingsFilterDto) {
+    const business = await this.prisma.businessProfile.findUnique({
+      where: { ownerId },
+    });
+
+    if (!business) {
+      throw new NotFoundException('Business profile not found');
+    }
+
+    const { status, date, serviceId, page = 1, limit = 10 } = filters;
+    const skip = (page - 1) * limit;
+
+    const whereClause: Prisma.BookingWhereInput = { businessId: business.id };
+
+    if (status) whereClause.status = status;
+    if (date) whereClause.bookingDate = date;
+    if (serviceId) whereClause.serviceId = serviceId;
+
+    const [data, total] = await Promise.all([
+      this.prisma.booking.findMany({
+        where: whereClause,
+        skip,
+        take: limit,
+        include: {
+          service: {
+            select: { name: true, durationMinutes: true, price: true, currency: true },
+          },
+          customer: {
+            select: { fullName: true, email: true },
+          },
+        },
+        orderBy: [
+          { bookingDate: 'desc' },
+          { startTime: 'desc' },
+        ],
+      }),
+      this.prisma.booking.count({ where: whereClause }),
+    ]);
+
+    return {
+      data,
+      meta: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      },
+    };
+  }
+
+  async findOneForOwner(id: string, ownerId: string) {
+    const business = await this.prisma.businessProfile.findUnique({
+      where: { ownerId },
+    });
+
+    if (!business) {
+      throw new NotFoundException('Business profile not found');
+    }
+
+    const booking = await this.prisma.booking.findFirst({
+      where: {
+        id,
+        businessId: business.id,
+      },
+      include: {
+        service: true,
+        customer: {
+          select: { fullName: true, email: true },
+        },
+      },
+    });
+
+    if (!booking) {
+      throw new NotFoundException('Booking not found');
+    }
+
+    return booking;
+  }
+
+  async updateBookingStatusForOwner(id: string, ownerId: string, status: BookingStatus) {
+    const booking = await this.findOneForOwner(id, ownerId);
+
+    if (booking.status === 'CANCELLED') {
+      throw new BadRequestException('Cannot modify a cancelled booking');
+    }
+
+    const updated = await this.prisma.booking.update({
+      where: { id },
+      data: { status },
+    });
+
+    return { message: 'Booking status updated successfully', booking: updated };
   }
 }

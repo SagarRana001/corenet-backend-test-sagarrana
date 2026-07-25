@@ -1,98 +1,91 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# BookSlot API Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+BookSlot is a robust scheduling and booking backend built with NestJS and Prisma. It implements a strict "Solo Business" model where an owner can set up a profile, define services, set their weekly availability, and mathematically prevent double-bookings through advanced database constraints.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Tech Stack
+- **Framework**: NestJS (Express under the hood)
+- **Language**: TypeScript (Strict Mode)
+- **ORM**: Prisma
+- **Database**: PostgreSQL
+- **Validation**: class-validator & class-transformer
+- **Authentication**: JWT & Passport
 
-## Description
+## Architecture & Design Decisions
+- **Clean Module Architecture**: Every domain entity (`users`, `auth`, `business-profile`, `services`, `slots`, `bookings`) gets its own isolated module, controller, and service.
+- **Dynamic Slot Generation**: Instead of pre-saving millions of empty 30-minute slots to the database, slots are generated dynamically on-the-fly based on the day's `Availability` boundaries, existing overlapping `Booking` records, and the mathematical length of the `Service.durationMinutes`.
+- **Double Booking Prevention**: We use Prisma's `Serializable` isolation level during the transaction lock, combined with a `@@unique([businessId, bookingDate, startTime])` constraint in Postgres. This absolutely guarantees zero double bookings even under heavy concurrent traffic.
+- **Role-Based Access Control**: Strict `@RolesGuard` enforcement. Owners cannot accidentally access customer actions, and customers cannot manage business settings.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Project setup
-
-```bash
-$ npm install
+## Folder Structure
+```text
+src/
+├── auth/                 # JWT Strategies, Guards, Auth Service
+├── users/                # User registration & lookup
+├── business-profile/     # Business Profile management for Owners
+├── services/             # Services offered by the business
+├── availability/         # Weekly operational hours 
+├── slots/                # Core mathematical engine for dynamic slots
+├── bookings/             # Booking engine & Owner/Customer APIs
+├── common/               # Global filters & interceptors
+├── main.ts               # Bootstraps app with ValidationPipes & Swagger
 ```
 
-## Compile and run the project
+## Setup & Installation
 
+**1. Clone & Install**
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm install
 ```
 
-## Run tests
-
+**2. Environment Variables**
+Copy the sample environment file and adjust for your local PostgreSQL database:
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+cp .env.example .env
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
+**3. Database Setup**
+Apply the migrations to setup your database schema:
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+npx prisma migrate deploy
+# Or for local development: npx prisma migrate dev
+npx prisma generate
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+**4. Running Locally**
+```bash
+npm run start:dev
+```
 
-## Resources
+**5. Running Unit Tests**
+```bash
+npm run test
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+## API Overview
+*Note: Swagger docs are available at `/api` when running locally.*
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+### Auth & Users
+- `POST /auth/register` - Register as OWNER or CUSTOMER.
+- `POST /auth/login` - Login to get JWT token.
 
-## Support
+### Business & Settings (Owner Only)
+- `POST /business` - Create your business profile.
+- `POST /services` - Add a service (e.g. Haircut - 30 mins).
+- `POST /availability` - Define working hours for specific days.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### Slots (Public / Customer)
+- `GET /services/:id/slots?date=YYYY-MM-DD` - Get dynamically generated slots.
 
-## Stay in touch
+### Bookings (Customer)
+- `POST /bookings` - Book a slot.
+- `GET /bookings/me` - View own bookings (supports pagination & status filters).
+- `PATCH /bookings/:id/cancel` - Cancel a booking.
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### Bookings (Owner)
+- `GET /owner/bookings` - View all incoming bookings for your business.
+- `PATCH /owner/bookings/:id/status` - Mark booking as CONFIRMED, COMPLETED, or NO_SHOW.
 
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## Future Improvements
+- Add caching for `getSlots` via Redis to reduce database hits on high-traffic days.
+- Implement soft-deletes on Bookings for analytics tracking.
+- Add real-time WebSocket events to update front-end slot UI instantly when someone else books.
