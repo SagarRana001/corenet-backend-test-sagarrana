@@ -25,6 +25,7 @@ model User {
   updatedAt DateTime @updatedAt
 
   businessProfile BusinessProfile?
+  bookings        Booking[]
 }
 
 model BusinessProfile {
@@ -85,6 +86,26 @@ model Service {
   isActive        Boolean         @default(true)
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
+  bookings        Booking[]
 
   @@unique([businessId, name])
+}
+
+enum BookingStatus {
+  CONFIRMED
+  CANCELLED
+}
+
+model Booking {
+  id         String        @id @default(uuid()) @db.Uuid
+  serviceId  String        @db.Uuid
+  service    Service       @relation(fields: [serviceId], references: [id])
+  customerId String        @db.Uuid
+  customer   User          @relation(fields: [customerId], references: [id])
+  date       String // Format: YYYY-MM-DD
+  startTime  String // Format: HH:mm
+  endTime    String // Format: HH:mm
+  status     BookingStatus @default(CONFIRMED)
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
 }
